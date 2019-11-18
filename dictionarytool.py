@@ -84,10 +84,10 @@ class DictionaryTool():
             elif incorrect_result == 3:
                 if antonym == 'No antonyms found':
                     print('Correct Word: {} \nSynonyms: {} \nDefinitions:'.format(word, synonym))
-                    # print(*definitions, sep='\n')
+                    print(*definitions, sep='\n')
                 else:
                     print('Correct Word: {} \nSynonyms: {} \nAntonyms: {}\nDefinitions:'.format(word, synonym, antonym))
-                    # print(*definitions, sep='\n')
+                    print(*definitions, sep='\n')
                 return
 
     def definition(self, word):
@@ -138,17 +138,17 @@ class DictionaryTool():
         ex = obj.example(word)
         if ex != 'word not found':
             print('Examples:')
-            # print(*ex, sep='\n')
+            print(*ex, sep='\n')
             definition = obj.definition(word)
             print('\nDefinition:')
-            # print(*definition, sep='\n')
+            print(*definition, sep='\n')
             synonym = obj.synonym_antonym('syn', word)
             print('\nSynonyms:')
-            # print(*synonym, sep=',')
+            print(*synonym, sep=',')
             antonym = obj.synonym_antonym('ant', word)
             if antonym != 'No antonyms found':
                 print('\nAntonyms:')
-                # print(*antonym, sep=', ')
+                print(*antonym, sep=', ')
         else:
             print(ex)
 
@@ -163,14 +163,14 @@ class DictionaryTool():
                 synonym = obj.synonym_antonym('syn', data['word'])
                 antonym = obj.synonym_antonym('ant', data['word'])
                 print('Examples:')
-                # print(*ex, sep='\n')
+                print(*ex, sep='\n')
                 print('Definition:')
-                # print(*definition, sep='\n')
+                print(*definition, sep='\n')
                 print('Synonyms:')
-                # print(*synonym, sep=',')
+                print(*synonym, sep=',')
                 if antonym != 'No antonyms found':
                     print('Antonyms:')
-                    # print(*antonym, sep=', ')
+                    print(*antonym, sep=', ')
                 if play == 1:
                     word = data['word']
                     return synonym, antonym, word
@@ -188,10 +188,10 @@ else:
     # ./dict defn <word>
     if sys.argv[1] == 'defn':
         definition = obj.definition(sys.argv[2])
-        # if definition != 'word not found':
-        #     print(*definition, sep='\n')
-        # else:
-        #     print(definition)
+        if definition != 'word not found':
+            print(*definition, sep='\n')
+        else:
+            print(definition)
 
     # ./dict syn <word> or ./dic ant <word>
     if sys.argv[1] == 'syn' or sys.argv[1] == 'ant':
@@ -201,10 +201,10 @@ else:
     # ./dict ex <word>
     if sys.argv[1] == 'ex':
         ex = obj.example(sys.argv[2])
-        # if ex != 'word not found':
-        #     print(*ex, sep='\n')
-        # else:
-        #     print(ex)
+        if ex != 'word not found':
+            print(*ex, sep='\n')
+        else:
+            print(ex)
 
     # ./dict <word>
     else:
