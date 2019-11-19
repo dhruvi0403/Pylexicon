@@ -42,37 +42,34 @@ class DictionaryTool():
 
     def play(self, count):
         """The command should display a definition, a synonym or an antonym and ask the user to guess the word."""
-        del all_list[:]
-        del hint[:]
+        
         if count == 0:
-            synonym, antonym, word = obj.random_words(1)
-            all_list.extend(synonym)
-            definition = requests.get(definition_url.format(word))
+            s.synonym, s.antonym, s.word = obj.random_words(1)
+            all_list.extend(s.synonym)
+            definition = requests.get(definition_url.format(s.word))
             definition_json = definition.json()
             for i in range(0, len(definition_json)):
                 all_list.append(definition_json[i]['text'])
-            if antonym != 'No antonyms found':
-                all_list.extend(antonym)
+            if s.antonym != 'No antonyms found':
+                all_list.extend(s.antonym)
             s.question = random.choice(all_list)
             print(s.question)
             s.result = ''
             result = input('Enter the correct word: ')
         result = ''
-        if result == word or result in synonym or s.result == word or s.result in synonym:
+        print(s.result)
+        if result == s.word or result in s.synonym or s.result == s.word or s.result in s.synonym:
             print('Successfully solved.')
             return
         else:
             print('Incorrect word.Choose from the following: \n 1. Try again 2. Hint 3. Quit')
-            try:
-                incorrect_result = int(input())
-            except ValueError:
-                incorrect_result = input('Which one 1,2 or 3?')
-            if incorrect_result == 1:
+            incorrect_result = input()
+            if incorrect_result == 1 or incorrect_result == 'try again':
                 s.result = input("Try again: ")
                 count += 1
                 obj.play(count)
-            elif incorrect_result == 2:
-                hint.extend([obj.shuffle_word(word) for word in word.split(',')])
+            elif incorrect_result == 2 or incorrect_result == 'hint':
+                hint.extend([obj.shuffle_word(s.word) for word in s.word.split(',')])
                 hint.extend(all_list)
                 hint.remove(s.question)
                 if s.result != '':
@@ -81,14 +78,18 @@ class DictionaryTool():
                 s.result = input(random_hint)
                 count += 1
                 obj.play(count)
-            elif incorrect_result == 3:
-                if antonym == 'No antonyms found':
-                    print('Correct Word: {} \nSynonyms: {} \nDefinitions:'.format(word, synonym))
+            elif incorrect_result == 3 or incorrect_result == 'quit':
+                if s.antonym == 'No antonyms found':
+                    print('Correct Word: {} \nSynonyms: {} \nDefinitions:'.format(s.word, s.synonym))
                     print(*definitions, sep='\n')
+                    exit()
                 else:
-                    print('Correct Word: {} \nSynonyms: {} \nAntonyms: {}\nDefinitions:'.format(word, synonym, antonym))
+                    print('Correct Word: {} \nSynonyms: {} \nAntonyms: {}\nDefinitions:'.format(s.word, s.synonym, s.antonym))
                     print(*definitions, sep='\n')
-                return
+                    exit()
+            else:
+                print('Oops. You are inputting something wrong. Please try again.')
+                exit()
 
     def definition(self, word):
         """Display definitions of a given word."""
@@ -135,6 +136,7 @@ class DictionaryTool():
 
     def display(self, word):
         """Display Word Definitions, Word Synonyms, Word Antonyms & Word Examples for a given word."""
+        print('In display')
         ex = obj.example(word)
         if ex != 'word not found':
             print('Examples:')
@@ -162,18 +164,19 @@ class DictionaryTool():
                 definition = obj.definition(data['word'])
                 synonym = obj.synonym_antonym('syn', data['word'])
                 antonym = obj.synonym_antonym('ant', data['word'])
-                print('Examples:')
-                print(*ex, sep='\n')
-                print('Definition:')
-                print(*definition, sep='\n')
-                print('Synonyms:')
-                print(*synonym, sep=',')
-                if antonym != 'No antonyms found':
-                    print('Antonyms:')
-                    print(*antonym, sep=', ')
                 if play == 1:
                     word = data['word']
                     return synonym, antonym, word
+                print('Examples:')
+                print(*ex, sep='\n')
+                print('\nDefinition:')
+                print(*definition, sep='\n')
+                print('\nSynonyms:')
+                print(*synonym, sep=',')
+                if antonym != 'No antonyms found':
+                    print('\nAntonyms:')
+                    print(*antonym, sep=', ')
+                
 
 obj = DictionaryTool()
 # ./dict
