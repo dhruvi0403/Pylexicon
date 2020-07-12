@@ -38,6 +38,7 @@ class DictionaryTool():
         """To display the word randomly jumbled (cat => atc, tac, tca)"""
         word = list(word)
         shuffle(word)
+        print(word)
         return ''.join(word)
 
     def play(self, count):
