@@ -39,6 +39,7 @@ class DictionaryTool():
         word = list(word)
         shuffle(word)
         print(word)
+        print(word)
         return ''.join(word)
 
     def play(self, count):
